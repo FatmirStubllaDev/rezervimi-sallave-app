@@ -21,7 +21,7 @@ const schema = z.object({
   roomId: z.string().uuid("Select a room"),
   title: z.string().min(3),
   startDateTime: z.string().min(1),
-  endDateTime: z.string().min(1),
+  endDateTime: z.string().min(1, "End time is required"),
   participants: z.coerce.number().int().min(1),
   notes: z.string().optional(),
 });
@@ -136,8 +136,14 @@ export default function NewReservationPage() {
               <Input
                 id="endDateTime"
                 type="datetime-local"
-                {...register("endDateTime")}
+                required
+                {...register("endDateTime", { required: "End time is required" })}
               />
+              {errors.endDateTime && (
+                <p className="mt-1 text-xs text-red-700">
+                  {errors.endDateTime.message}
+                </p>
+              )}
             </div>
           </div>
           <div>
